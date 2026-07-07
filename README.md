@@ -38,18 +38,22 @@ CodeAlpha_Network_Intrusion_Detection_System/
 ## Setup (Windows)
 
 1. **Install Npcap** (required for scapy to capture packets on Windows):
-   https://npcap.com/#download — during install, check "Install Npcap in WinPcap API-compatible Mode".
+   <https://npcap.com/#download> — during install, check "Install Npcap in WinPcap API-compatible Mode".
 
 2. **Install Python dependencies:**
+
    ```
    pip install -r requirements.txt
    ```
 
 3. **Run the NIDS** (must be run from an **Administrator** terminal/PowerShell):
+
    ```
    python main.py
    ```
+
    You should see:
+
    ```
    [INFO] Starting live capture on default interface. Press Ctrl+C to stop.
    ```
@@ -63,11 +67,13 @@ Since you may not have a live attacker to demonstrate against, use the included 
 generate safe, self-contained "attack" traffic against your own machine (`127.0.0.1`):
 
 1. In **Terminal 1** (as Administrator), start the NIDS:
+
    ```
    python main.py
    ```
 
 2. In **Terminal 2**, run the simulator:
+
    ```
    python simulate_attack.py --both
    ```

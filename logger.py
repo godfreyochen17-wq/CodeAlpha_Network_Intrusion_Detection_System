@@ -6,6 +6,7 @@ log file, so you have evidence/history to show in your report or video.
 """
 
 import os
+import threading
 import datetime
 from config import LOG_FILE
 
@@ -16,6 +17,12 @@ COLORS = {
     "HIGH": "\033[91m",     # red
     "RESET": "\033[0m",
 }
+
+# In-memory history of alerts, used by dashboard.py to serve a live web UI.
+# A regular list + lock is enough here - this is a single-machine student
+# project, not a high-concurrency production system.
+ALERT_HISTORY = []
+_history_lock = threading.Lock()
 
 
 def _ensure_log_dir():
@@ -42,6 +49,16 @@ def log_alert(severity: str, category: str, src_ip: str, dst_ip: str, detail: st
 
     with open(LOG_FILE, "a", encoding="utf-8") as f:
         f.write(line + "\n")
+
+    with _history_lock:
+        ALERT_HISTORY.append({
+            "timestamp": timestamp,
+            "severity": severity,
+            "category": category,
+            "src_ip": src_ip,
+            "dst_ip": dst_ip,
+            "detail": detail,
+        })
 
 
 def log_info(message: str):
